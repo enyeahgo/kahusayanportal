@@ -54,43 +54,18 @@ router.post('/login', function(req, res, next) {
                       sessionData.token = data.user._lat;
                       sessionData.userdata = dataSnapshot.val();
                       res.cookie('__session', sessionData, { httpOnly: true, sameSite: "none" });
-                      // res.success = true;
-                      // next()
                       res.redirect('/profile');
                   }).catch(function(error) {
                       sessionData.error = error.message;
                       res.cookie('__session', sessionData, { httpOnly: true, sameSite: "none" });
-                      // res.success = false;
                       res.redirect('/login');
                   })
           })
           .catch(function(error) {
             sessionData.error = error.message;
             res.cookie('__session', sessionData, { httpOnly: true, sameSite: "none" });
-            // res.success = false;
-            // next()
             res.redirect('/login');
           });
-  // firebase.auth().onAuthStateChanged(function(user) {
-  //     if(user){
-  //         // Get User Data using UID
-          // firebase.database().ref('Users').child(user.uid).once('value')
-          //         .then(function(dataSnapshot) {
-          //             sessionData.error = '';
-          //             sessionData.token = user._lat;
-          //             sessionData.userdata = dataSnapshot.val();
-          //             res.cookie('__session', sessionData, { httpOnly: true, sameSite: "none" });
-          //             // res.success = true;
-          //             // next()
-          //             res.redirect('/profile');
-          //         }).catch(function(error) {
-          //             sessionData.error = error.message;
-          //             res.cookie('__session', sessionData, { httpOnly: true, sameSite: "none" });
-          //             // res.success = false;
-          //             res.redirect('/login');
-          //         })
-  //     }
-  // })
 })
 
 router.get('/register', function(req, res, next) {
@@ -136,7 +111,8 @@ router.get('/profile', getUserDataFromCookie, function(req, res, next) {
       name: res.userdata.rank+' '+res.userdata.fname+' '+res.userdata.mname.charAt(0)+' '+res.userdata.lname+' '+res.userdata.suffix+' '+res.userdata.sn+' ('+res.userdata.os+') PA',
       isOfficer: res.userdata.isOfficer,
       userdata: res.userdata,
-      isLoggedIn: true
+      isLoggedIn: true,
+      isVerified: res.userdata.isVerified,
     })
   } else {
     var sessionData = req.cookies['__session'] ? req.cookies['__session'] : {};
@@ -151,6 +127,35 @@ router.get('/logout', function(req, res, next) {
   firebase.auth().signOut();
   res.clearCookie('__session');
   res.redirect('/');
+})
+
+router.get('/announcements', function(req, res, next) {
+  if(req.cookies['__session']){
+    if(req.cookies['__session'].userdata){
+      if(req.cookies['__session'].userdata.isVerified){
+        // Get Announcements
+        firebase.database().ref('Announcements').once('value')
+                .then(function(dataSnapshot) {
+                    res.render('announcements', {
+                      title: 'KAHUSAYAN',
+                      announcements: dataSnapshot.val(),
+                    })
+                }).catch(function(error) {
+                  console.log(error.message);
+                  res.redirect('/profile');
+                })
+
+      } else {
+        res.redirect('/profile');
+      }
+    } else {
+      res.cookie('__session', {error: 'You need to login!'}, { httpOnly: true, sameSite: 'none' });
+      res.redirect('/login');
+    }
+  } else {
+    res.cookie('__session', {error: 'You need to login!'}, { httpOnly: true, sameSite: 'none' });
+    res.redirect('/login');
+  }
 })
 
 module.exports = router;

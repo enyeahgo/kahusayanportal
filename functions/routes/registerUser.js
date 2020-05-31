@@ -27,7 +27,8 @@ module.exports = function registerUser(req, res, next) {
         unit: req.body.unit,
         pos: req.body.pos,
         home: req.body.home,
-        isOfficer: isOfficer
+        isOfficer: isOfficer,
+        isVerified: false
     }
 
     if(req.body.password === req.body.rpass){

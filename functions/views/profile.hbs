@@ -41,12 +41,14 @@
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li class="active"><a href="/">Home</a></li>
-          {{!-- <li><a href="/about">About</a></li>
-          <li><a href="/services">Services</a></li>
+          <li><a href="/">Home</a></li>
+          {{#if isVerified}}
+          <li><a href="/announcements">Announcements</a></li>
+          {{/if}}
+          {{!-- <li><a href="/services">Services</a></li>
           <li><a href="/portfolio">Portfolio</a></li>
           <li><a href="/team">Team</a></li> --}}
-          <li class="drop-down"><a href="">Account</a>
+          <li class="drop-down active"><a href="">Account</a>
             <ul>
                 {{#if isLoggedIn}}
                 <li><a href="/profile">Profile</a></li>
@@ -83,7 +85,11 @@
               <div class="card-header">
                 <div class="section-title">
                   <h2>PROFILE</h2>
-                  <p style="color: red;">{{error}}</p>
+                  {{#if isVerified}}
+                  <p style="color: green;">VERIFIED</p>
+                  {{else}}
+                  <p style="color: red;">WAITING FOR VERIFICATION</p>
+                  {{/if}}
                 </div>
               </div>
               <div class="card-body">
