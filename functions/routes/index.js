@@ -137,7 +137,7 @@ router.get('/announcements', function(req, res, next) {
         firebase.database().ref('Announcements').once('value')
                 .then(function(dataSnapshot) {
                     res.render('announcements', {
-                      title: 'KAHUSAYAN',
+                      title: 'TAS',
                       announcements: dataSnapshot.val(),
                     })
                 }).catch(function(error) {
