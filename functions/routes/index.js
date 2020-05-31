@@ -5,6 +5,7 @@ const saveRegData = require('./saveRegData');
 const registerUser = require('./registerUser');
 const getUserDataFromCookie = require('./getUserDataFromCookie');
 const signInUser = require('./signInUser');
+var timeAgo = require('epoch-to-timeago').timeAgo;
 
 router.get('/', getUserDataFromCookie, function(req, res, next) {
   if(res.isLoggedIn){
@@ -134,17 +135,28 @@ router.get('/announcements', function(req, res, next) {
     if(req.cookies['__session'].userdata){
       if(req.cookies['__session'].userdata.isVerified){
         // Get Announcements
-        firebase.database().ref('Announcements').once('value')
-                .then(function(dataSnapshot) {
-                    res.render('announcements', {
-                      title: 'TAS',
-                      announcements: dataSnapshot.val(),
-                    })
-                }).catch(function(error) {
-                  console.log(error.message);
-                  res.redirect('/profile');
-                })
+        firebase.database().ref('Announcements').orderByChild('dateAnnounced').on('value', function(dataSnapshot) {
 
+                    // Convert dateAnnounced
+                    var timeNow = new Date().getTime();
+                    var finalAnnouncements = [];
+
+                    dataSnapshot.forEach(function(child) {
+                      finalAnnouncements.push({
+                        _key: child.key,
+                        announcer: child.val().announcer,
+                        dateAnnounced: timeAgo((child.val().dateAnnounced * 1000), timeNow),
+                        message: child.val().message,
+                        title: child.val().title
+                      })
+                    });
+
+                    res.render('announcements', {
+                      title: 'KAHUSAYAN',
+                      announcements: finalAnnouncements,
+                      isLoggedIn: true,
+                    })
+                })
       } else {
         res.redirect('/profile');
       }
