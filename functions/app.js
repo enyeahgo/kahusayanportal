@@ -4,6 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const Multer = require('multer');
+const multer = Multer({
+	storage: Multer.memoryStorage(),
+	limits: {
+	  fileSize: 5 * 1024 * 1024
+	}
+});
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 

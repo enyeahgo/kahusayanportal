@@ -1,5 +1,6 @@
 const firebase = require('firebase');
 require('firebase/auth');
+require('firebase/database');
 require('firebase/firebase-storage');
 
 const config = {

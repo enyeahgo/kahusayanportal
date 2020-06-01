@@ -3,10 +3,13 @@ var router = express.Router();
 const firebase = require('../Firebase');
 const fs = require('fs');
 
-const saveRegData = require('./saveRegData');
+const toStream = require('buffer-to-stream');
+const streamToBlob = require('stream-to-blob');
+
+const streamifier = require('streamifier');
+
 const registerUser = require('./registerUser');
 const getUserDataFromCookie = require('./getUserDataFromCookie');
-const signInUser = require('./signInUser');
 var timeAgo = require('epoch-to-timeago').timeAgo;
 
 router.get('/', getUserDataFromCookie, function(req, res, next) {
@@ -21,21 +24,6 @@ router.get('/', getUserDataFromCookie, function(req, res, next) {
       isLoggedIn: false,
     });
   }
-});
-
-router.get('/p', function(req, res, next) {
-  res.render('portfolio', { title: 'KAHUSAYAN' });
-});
-
-router.get('/t', function(req, res, next) {
-  res.render('template', {
-    title: 'KAHUSAYAN',
-    email: 'enyeahgo@gmail.com',
-    mobile: '09159476988',
-    fullname: 'Inigo Orosco II',
-    error: 'Please fill-out all fields.',
-    isLoggedIn: false,
-  });
 });
 
 router.get('/login', function(req, res, next) {
@@ -185,24 +173,20 @@ router.get('/uploadphoto', getUserDataFromCookie, function(req, res, next) {
 })
 
 router.post('/uploadphoto', function(req, res, next) {
-
-  console.log(req);
-
-  // var file = fs.readFileSync(req.files.fileToUpload,'utf8');
-
-  // console.log(file);
-
-  // fs.open(req.body.fileToUpload, 'w', function (err, file) {
-  //   if (err) throw err;
-  //     var file = file;
-  // });
-
-  // var storageRef = firebase.storage().ref();
-  // var userphotoStorageRef = storageRef.child('users/icon.png');
-
-  // userphotoStorageRef.put(file).then(function(snapshot) {
-  //   console.log(JSON.stringify(snapshot));
-  // });
+	
+	var strm = streamifier.createReadStream(req.rawBody);
+	
+	var storage = firebase.storage();
+  var storageRef = storage.ref().child('users');
+	
+	streamToBlob(strm).then(function(blob) {
+		storageRef.put(blob).then(function(snapshot) {
+	    console.log(JSON.stringify(snapshot));
+	  });
+	})
+  
+  
 })
+
 
 module.exports = router;
