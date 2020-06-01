@@ -43,8 +43,8 @@
         <ul>
           <li><a href="/">Home</a></li>
           {{#if isVerified}}
-          <li class="active"><a href="/announcements">Announcements</a></li>
-          <li><a href="/uploadphoto">Upload Photo</a></li>
+          <li><a href="/announcements">Announcements</a></li>
+          <li class="active"><a href="/uploadphoto">Upload Photo</a></li>
           {{/if}}
           {{!-- <li><a href="/services">Services</a></li>
           <li><a href="/portfolio">Portfolio</a></li>
@@ -71,7 +71,7 @@
     <!-- ======= Breadcrumbs ======= -->
     <section class="breadcrumbs">
       <div class="container text-center" style="margin-top: 10px">
-        <h2>Announcements</h2>
+        <h2>{{pageTitle}}</h2>
       </div>
     </section><!-- End Breadcrumbs -->
 
@@ -81,11 +81,11 @@
 
         <div class="portfolio-details-container">
 
-          <div class="owl-carousel portfolio-details-carousel">
+          {{!-- <div class="owl-carousel portfolio-details-carousel">
             <img src="assets/img/announcements/1.jpg" class="img-fluid" alt="">
-            {{!-- <img src="assets/img/announcements/2.jpg" class="img-fluid" alt=""> --}}
+            <img src="assets/img/announcements/2.jpg" class="img-fluid" alt="">
             <img src="assets/img/announcements/3.jpg" class="img-fluid" alt="">
-          </div>
+          </div> --}}
 
           {{!-- <div class="portfolio-info">
             <h3>Project information</h3>
@@ -96,6 +96,23 @@
               <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
             </ul>
           </div> --}}
+          <div class="row justify-content-center">
+            <div class="col-md-4 text-center">
+              <img src="{{photoURL}}" width="100px" height="100px" />
+            </div>
+          </div>
+
+          <div class="row justify-content-center">
+            <div class="col-md-4 mt-5 mt-lg-5">
+              <form action="/uploadphoto" method="post">
+                <div class="form-group">
+                  {{!-- <input type="file" name="fileToUpload" id="fileToUpload" class="form-control" /> --}}
+                  <input type="file" accept="image/*" name="fileToUpload" id="fileToUpload" />
+                </div>
+                <input type="submit" value="Upload Image" name="submit" class="btn btn-primary btn-block form-control" />
+              </form>
+            </div>
+          </div>
 
         </div>
 
@@ -106,7 +123,7 @@
           </p>
         </div> --}}
 
-        <div class="list-group" style="margin-top: 30px">
+        {{!-- <div class="list-group" style="margin-top: 30px">
           {{#each announcements}}
           <div class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
@@ -117,7 +134,7 @@
             <small>{{this.announcer}}</small>
           </div>
           {{/each}}
-        </div>
+        </div> --}}
 
       </div>
     </section><!-- End Portfolio Details Section -->

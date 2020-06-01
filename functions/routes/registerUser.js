@@ -28,7 +28,9 @@ module.exports = function registerUser(req, res, next) {
         pos: req.body.pos,
         home: req.body.home,
         isOfficer: isOfficer,
-        isVerified: false
+        isVerified: false,
+        uploadedPhoto: false,
+        photoURL: '/assets/img/icons/user.png'
     }
 
     if(req.body.password === req.body.rpass){
