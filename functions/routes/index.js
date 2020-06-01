@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const firebase = require('../Firebase');
+const fs = require('fs');
+
 const saveRegData = require('./saveRegData');
 const registerUser = require('./registerUser');
 const getUserDataFromCookie = require('./getUserDataFromCookie');
@@ -130,7 +132,7 @@ router.get('/logout', function(req, res, next) {
   res.redirect('/');
 })
 
-router.get('/announcements', function(req, res, next) {
+router.get('/announcements', getUserDataFromCookie, function(req, res, next) {
   if(req.cookies['__session']){
     if(req.cookies['__session'].userdata){
       if(req.cookies['__session'].userdata.isVerified){
@@ -155,6 +157,7 @@ router.get('/announcements', function(req, res, next) {
                       title: 'KAHUSAYAN',
                       announcements: finalAnnouncements,
                       isLoggedIn: true,
+                      isVerified: res.userdata.isVerified,
                     })
                 })
       } else {
@@ -168,6 +171,38 @@ router.get('/announcements', function(req, res, next) {
     res.cookie('__session', {error: 'You need to login!'}, { httpOnly: true, sameSite: 'none' });
     res.redirect('/login');
   }
+})
+
+router.get('/uploadphoto', getUserDataFromCookie, function(req, res, next) {
+  res.render('uploadphoto', {
+    title: 'KAHUSAYAN',
+    pageTitle: 'Upload Photo',
+    isLoggedIn: true,
+    isVerified: res.userdata.isVerified,
+    uploadedPhoto: res.userdata.uploadedPhoto,
+    photoURL: res.userdata.photoURL
+  })
+})
+
+router.post('/uploadphoto', function(req, res, next) {
+
+  console.log(req);
+
+  // var file = fs.readFileSync(req.files.fileToUpload,'utf8');
+
+  // console.log(file);
+
+  // fs.open(req.body.fileToUpload, 'w', function (err, file) {
+  //   if (err) throw err;
+  //     var file = file;
+  // });
+
+  // var storageRef = firebase.storage().ref();
+  // var userphotoStorageRef = storageRef.child('users/icon.png');
+
+  // userphotoStorageRef.put(file).then(function(snapshot) {
+  //   console.log(JSON.stringify(snapshot));
+  // });
 })
 
 module.exports = router;
