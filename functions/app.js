@@ -3,14 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-const Multer = require('multer');
-const multer = Multer({
-	storage: Multer.memoryStorage(),
-	limits: {
-	  fileSize: 5 * 1024 * 1024
-	}
-});
+const fileUpload = require('express-fileupload')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -26,6 +19,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 },
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

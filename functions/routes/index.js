@@ -1,16 +1,20 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const firebase = require('../Firebase');
 const fs = require('fs');
 
-const toStream = require('buffer-to-stream');
-const streamToBlob = require('stream-to-blob');
+const {Storage} = require('@google-cloud/storage');
+const storage = new Storage();
 
-const streamifier = require('streamifier');
+const fileUploader = require('express-fileupload');
+
+router.use(fileUploader({
+  limits: { fileSize: 50 * 1024 * 1024 },
+}));
 
 const registerUser = require('./registerUser');
 const getUserDataFromCookie = require('./getUserDataFromCookie');
-var timeAgo = require('epoch-to-timeago').timeAgo;
+const timeAgo = require('epoch-to-timeago').timeAgo;
 
 router.get('/', getUserDataFromCookie, function(req, res, next) {
   if(res.isLoggedIn){
@@ -173,19 +177,17 @@ router.get('/uploadphoto', getUserDataFromCookie, function(req, res, next) {
 })
 
 router.post('/uploadphoto', function(req, res, next) {
-	
-	var strm = streamifier.createReadStream(req.rawBody);
-	
-	var storage = firebase.storage();
-  var storageRef = storage.ref().child('users');
-	
-	streamToBlob(strm).then(function(blob) {
-		storageRef.put(blob).then(function(snapshot) {
-	    console.log(JSON.stringify(snapshot));
-	  });
-	})
-  
-  
+  res.send(JSON.stringify(req.file));
+  // storage.bucket('kahusayanportal').upload(req.body.photo, {
+  //   gzip: true,
+  //   metadata: {
+  //     cacheControl: 'public, max-age=31536000',
+  //   },
+  // })
+  // .then(function(result) {
+  //   console.log(result)
+  // })
+  // .catch(console.error);
 })
 
 
