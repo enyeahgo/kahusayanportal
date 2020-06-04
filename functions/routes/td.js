@@ -1,19 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const firebase = require('../Firebase');
+const timeAgo = require('epoch-to-timeago').timeAgo;
 const getAdminDataFromCookie = require('./getAdminDataFromCookie');
 
 router.get('/', getAdminDataFromCookie, function(req, res, next) {
     if(res.isLoggedIn){
-        res.render('index-admin', {
-          title: 'DIRECTORATE',
-          isLoggedIn: true,
+        res.render('index-td', {
+            title: 'DIRECTORATE',
+            name: res.adminData.rank+' '+res.adminData.fname+' '+res.adminData.mname.charAt(0)+' '+res.adminData.lname+' '+res.adminData.suffix+' ('+res.adminData.os+') PA',
+            isOfficer: res.adminData.isOfficer,
+            adminData: res.adminData,
+            isLoggedIn: true,
         });
       } else {
-        res.render('index-admin', {
-          title: 'DIRECTORATE',
-          isLoggedIn: false,
-        });
+          res.clearCookie('__session');
+          res.cookie('__session', {error: 'You need to login as admin.'}, { httpOnly: true, sameSite: 'none' });
+          res.redirect('/td/login');
       }
 })
 
@@ -32,7 +35,7 @@ router.post('/login', function(req, res, next) {
                 firebase.database().ref('Admins').child(data.user.uid).once('value')
                         .then(function(dataSnapshot) {
                             if(dataSnapshot.val() === null){
-                                res.send('Not admin');
+                                res.send('You are not allwoed to view this page.');
                             } else {
                                 sessionData.error = '';
                                 sessionData.token = data.user._lat;
@@ -96,13 +99,14 @@ router.post('/register', function(req, res, next) {
             pos: req.body.pos,
             isOfficer: isOfficer,
             isVerified: true,
+            isAdmin: true
         }
 
         firebase.auth().createUserWithEmailAndPassword(req.body.email, req.body.password)
                 .then(function(data) {
                     firebase.database().ref('Admins').child(data.user.uid).set(userdata);
                     res.clearCookie('__session');
-                    firebase.database.ref('Admins').child(data.user.uid).once('value')
+                    firebase.database().ref('Admins').child(data.user.uid).once('value')
                             .then(function(dataSnapshot) {
                                 var adminData = dataSnapshot.val();
 
@@ -126,6 +130,91 @@ router.get('/logout', function(req, res, next) {
     firebase.auth().signOut();
     res.clearCookie('__session');
     res.redirect('/');
-  })
+})
+
+router.get('/announcements', getAdminDataFromCookie, function(req, res, next) {
+    if(res.isLoggedIn){
+        // Get Announcements
+        firebase.database().ref('Announcements').orderByChild('dateAnnounced').on('value', function(dataSnapshot) {
+
+                    // Convert dateAnnounced
+                    var timeNow = new Date().getTime();
+                    var finalAnnouncements = [];
+
+                    dataSnapshot.forEach(function(child) {
+                    finalAnnouncements.push({
+                        _key: child.key,
+                        announcer: child.val().announcer,
+                        dateAnnounced: timeAgo((child.val().dateAnnounced), timeNow),
+                        message: child.val().message,
+                        title: child.val().title
+                    })
+                    });
+
+                    res.render('announcements', {
+                    title: 'KAHUSAYAN',
+                    announcements: finalAnnouncements,
+                    isLoggedIn: true,
+                    isVerified: true,
+                    isAdmin: true
+                    })
+                })
+    } else {
+    res.cookie('__session', {error: 'You need to login as admin!'}, { httpOnly: true, sameSite: 'none' });
+    res.redirect('/td/login');
+    }
+})
+
+router.get('/profile', getAdminDataFromCookie, function(req, res) {
+    if(res.isLoggedIn){
+        res.redirect('/td/');
+    } else {
+        res.clearCookie('__session');
+        res.cookie('__session', {error: 'You need to login as admin.'}, { httpOnly: true, sameSite: 'none' });
+        res.redirect('/td/login');
+    }
+})
+
+router.get('/post', getAdminDataFromCookie, function(req, res, next) {
+    if(res.isLoggedIn){
+        res.render('post', {
+            title: 'DIRECTORATE',
+            isLoggedIn: true,
+            error: req.cookies['__session'] ? req.cookies['__session'].error : '',
+        })
+    } else {
+        res.clearCookie('__session');
+        res.cookie('__session', {error: 'You need to login as admin.'}, { httpOnly: true, sameSite: 'none' });
+        res.redirect('/td/login');
+    }
+})
+
+router.post('/post', getAdminDataFromCookie, function(req, res, next) {
+    var announcementsRef = firebase.database().ref('Announcements');
+    var sessionData = req.cookies['__session'];
+    if(req.body.title == '' || req.body.message == ''){
+        sessionData.error = 'Please put title and message.';
+        res.cookie('__session', sessionData, { httpOnly: true, sameSite: 'none' });
+        res.redirect('/td/post');
+    } else {
+        var postData = {
+            announcer: (res.adminData.course == '') ? res.adminData.pos : res.adminData.pos + ', ' + res.adminData.course,
+            dateAnnounced: new Date().getTime(),
+            message: req.body.message,
+            title: req.body.title
+        }
+
+        var postId = announcementsRef.push().key;
+        firebase.database().ref('Announcements').child(postId).set(postData)
+                .then(function(dataSnapshot) {
+                    res.redirect('/td/announcements');
+                })
+                .catch(function(error) {
+                    sessionData.error = error.message;
+                    res.cookie('__session', sessionData, { httpOnly: true, sameSite: 'none' });
+                    res.redirect('/td/post');
+                })
+    }
+})
 
 module.exports = router;

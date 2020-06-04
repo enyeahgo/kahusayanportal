@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>KAHUSAYAN ONLINE PORTAL - Directorate</title>
+  <meta content="The Armor School, Armor Division, Philippine Army Web Portal for Career Course Students" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="/assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top header-inner-pages">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo mr-auto"><a href="/">{{title}}</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo mr-auto"><img src="/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="/td">Home</a></li>
+          {{#if isLoggedIn}}
+          <li><a href="/td/announcements">Announcements</a></li>
+          <li><a href="/td/post">Post Announcement</a></li>
+          <li><a href="/td/profile">Profile</a></li>
+          <li><a href="/td/logout">Logout</a></li>
+          {{else}}
+          <li><a href="/login">Login</a></li>
+          {{/if}}
+        </ul>
+      </nav><!-- .nav-menu -->
+
+        {{!-- {{#if isLoggedIn}}
+        <a href="/profile" class="get-started-btn">My Profile</a>
+        {{else}}
+        <a href="/register" class="get-started-btn">Register</a>
+        {{/if}} --}}
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Section ======= -->
+    <section>
+      <div class="container">
+
+        <div class="row justify-content-center">
+
+          <div class="col-lg-6 mt-3 mt-lg-5">
+            <div class="card shadow">
+              <div class="card-header">
+                <div class="section-title">
+                  <h2>PROFILE</h2>
+                </div>
+              </div>
+              <div class="card-body">
+                <ul>
+                  {{#if isOfficer}}
+                  <li style="text-transform: uppercase">FULLNAME: <p><strong>{{name}}</strong></p></li>
+                  {{else}}
+                  <li>FULLNAME: <p><strong>{{name}}</strong></p></li>
+                  {{/if}}
+                  <li style="text-transform: uppercase">POSITION: <p><strong>{{adminData.pos}}</strong></p></li>
+                  <li style="text-transform: uppercase">COURSE: <p><strong>{{adminData.course}}</strong></p></li>
+                  <li>EMAIL: <p><strong>{{adminData.email}}</strong></p></li>
+                  <li>MOBILE: <p><strong>{{adminData.mobile}}</strong></p></li>
+                </ul>
+              </div>
+              {{!-- <div class="card-footer">
+                  <a class="btn btn-primary btn-block text-center" href="#">Edit Details<a/>
+              </div> --}}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <strong><span>Kahusayan</span></strong> &copy; <script>document.write(new Date().getFullYear())</script>
+      </div>
+      <div class="credits">
+        Designed by <a href="https://create-cheap-commerce.web.app">Enliven Technologies Philippines</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top"><i class="ri-arrow-up-line"></i></a>
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="/assets/vendor/php-email-form/validate.js"></script>
+  <script src="/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/assets/vendor/venobox/venobox.min.js"></script>
+  <script src="/assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+  <script src="/assets/vendor/aos/aos.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>

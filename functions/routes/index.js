@@ -20,6 +20,7 @@ router.get('/', getUserDataFromCookie, function(req, res, next) {
   if(res.isLoggedIn){
     res.render('index', {
       title: 'KAHUSAYAN',
+      userdata: res.userdata,
       isLoggedIn: true,
     });
   } else {
@@ -139,7 +140,7 @@ router.get('/announcements', getUserDataFromCookie, function(req, res, next) {
                       finalAnnouncements.push({
                         _key: child.key,
                         announcer: child.val().announcer,
-                        dateAnnounced: timeAgo((child.val().dateAnnounced * 1000), timeNow),
+                        dateAnnounced: timeAgo((child.val().dateAnnounced), timeNow),
                         message: child.val().message,
                         title: child.val().title
                       })

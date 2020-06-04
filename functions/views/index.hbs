@@ -35,32 +35,46 @@
   <header id="header" class="fixed-top ">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo mr-auto"><a href="index.html">{{title}}</a></h1>
+      <h1 class="logo mr-auto"><a href="/">{{title}}</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
-      <nav class="nav-menu d-none d-lg-block">
-        <ul>
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="/td/login">Directorate</a></li>
-          {{!-- <li><a href="/about">About</a></li>
-          <li><a href="/services">Services</a></li>
-          <li><a href="/portfolio">Portfolio</a></li>
-          <li><a href="/team">Team</a></li> --}}
-          <li class="drop-down"><a href="">Account</a>
-            <ul>
-                {{#if isLoggedIn}}
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/logout">Logout</a></li>
-                {{else}}
-                <li><a href="/register">Create Account</a></li>
-                <li><a href="/login">Login</a></li>
-                {{/if}}
-            </ul>
-          </li>
+      {{#if isLoggedIn}}
+        <nav class="nav-menu d-none d-lg-block">
+          <ul>
+            <li class="active"><a href="/">Home</a></li>
+            {{#if userdata.isVerified}}
+            <li><a href="/announcements">Announcements</a></li>
+            {{/if}}
+            <li class="drop-down"><a href="">Account</a>
+              <ul>
+                  {{#if isLoggedIn}}
+                  <li><a href="/profile">Profile</a></li>
+                  <li><a href="/logout">Logout</a></li>
+                  {{else}}
+                  <li><a href="/register">Create Account</a></li>
+                  <li><a href="/login">Login</a></li>
+                  {{/if}}
+              </ul>
+            </li>
 
-        </ul>
-      </nav><!-- .nav-menu -->
+          </ul>
+        </nav><!-- .nav-menu -->
+      {{else}}
+        <nav class="nav-menu d-none d-lg-block">
+          <ul>
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/td/login">Directorate</a></li>
+            <li class="drop-down"><a href="">Students</a>
+              <ul>
+                  <li><a href="/register">Create Account</a></li>
+                  <li><a href="/login">Login</a></li>
+              </ul>
+            </li>
+
+          </ul>
+        </nav><!-- .nav-menu -->
+      {{/if}}
 
       {{!-- <a href="#about" class="get-started-btn scrollto">Get Started</a> --}}
 
