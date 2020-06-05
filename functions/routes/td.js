@@ -217,4 +217,68 @@ router.post('/post', getAdminDataFromCookie, function(req, res, next) {
     }
 })
 
+router.get('/students', getAdminDataFromCookie, function(req, res, next) {
+    if(res.isLoggedIn){
+        firebase.database().ref('Users').orderByChild('lname').once('value')
+                .then(function(dataSnapshot) {
+
+                    var aoacStudents = [];
+                    var ancoacStudents = [];
+                    var ancobcStudents = [];
+                    
+                    dataSnapshot.forEach(function(child) {
+                        if(child.val().course == 'Armor Officer Advance Course'){
+                            aoacStudents.push({
+                                _key: child.key,
+                                name: child.val().rank+' '+child.val().fname+' '+child.val().mname.charAt(0)+' '+child.val().lname+' '+child.val().suffix+' '+child.val().sn+' ('+child.val().os+') PA',
+                                email: child.val().email,
+                                mobile: child.val().mobile,
+                                isVerified: child.val().isVerified,
+                                uid: child.val().uid,
+                                serial: aoacStudents.length + 1
+                              })
+                        } else if(child.val().course == 'Armor NCO Advance Course'){
+                            ancoacStudents.push({
+                                _key: child.key,
+                                name: child.val().rank+' '+child.val().fname+' '+child.val().mname.charAt(0)+' '+child.val().lname+' '+child.val().suffix+' '+child.val().sn+' ('+child.val().os+') PA',
+                                email: child.val().email,
+                                mobile: child.val().mobile,
+                                isVerified: child.val().isVerified,
+                                uid: child.val().uid,
+                                serial: ancoacStudents.length + 1
+                                })
+                        } else if(child.val().course == 'Armor NCO Basic Course'){
+                            ancobcStudents.push({
+                                _key: child.key,
+                                name: child.val().rank+' '+child.val().fname+' '+child.val().mname.charAt(0)+' '+child.val().lname+' '+child.val().suffix+' '+child.val().sn+' ('+child.val().os+') PA',
+                                email: child.val().email,
+                                mobile: child.val().mobile,
+                                isVerified: child.val().isVerified,
+                                uid: child.val().uid,
+                                serial: ancobcStudents.length + 1
+                                })
+                        }
+                    })
+
+                    res.render('students', {
+                        title: 'DIRECTORATE',
+                        pageTitle: 'Students',
+                        aoacStudents: aoacStudents,
+                        ancoacStudents: ancoacStudents,
+                        ancobcStudents: ancobcStudents,
+                        isLoggedIn: true
+                    })
+                })
+    } else {
+        res.clearCookie('__session');
+        res.cookie('__session', {error: 'You need to login as admin.'}, { httpOnly: true, sameSite: 'none' });
+        res.redirect('/td/login');
+    }
+})
+
+router.get('/verifyuser/:uid', function(req, res, next) {
+    firebase.database().ref('Users/'+req.params.uid+'/isVerified').set(true);
+    res.redirect('/td/students');
+})
+
 module.exports = router;

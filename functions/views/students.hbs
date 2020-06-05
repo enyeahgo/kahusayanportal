@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -45,8 +45,8 @@
           {{#if isLoggedIn}}
           <li><a href="/td/announcements">Announcements</a></li>
           <li><a href="/td/post">Post Announcement</a></li>
-          <li><a href="/td/students">Students</a></li>
-          <li class="active"><a href="/td/profile">Profile</a></li>
+          <li class="active"><a href="/td/students">Students</a></li>
+          <li><a href="/td/profile">Profile</a></li>
           <li><a href="/td/logout">Logout</a></li>
           {{else}}
           <li><a href="/login">Login</a></li>
@@ -71,30 +71,108 @@
 
         <div class="row justify-content-center">
 
-          <div class="col-lg-6 mt-3 mt-lg-5">
-            <div class="card shadow">
-              <div class="card-header">
-                <div class="section-title">
-                  <h2>PROFILE</h2>
-                </div>
-              </div>
-              <div class="card-body">
-                <ul>
-                  {{#if isOfficer}}
-                  <li style="text-transform: uppercase">FULLNAME: <p><strong>{{name}}</strong></p></li>
-                  {{else}}
-                  <li>FULLNAME: <p><strong>{{name}}</strong></p></li>
-                  {{/if}}
-                  <li style="text-transform: uppercase">POSITION: <p><strong>{{adminData.pos}}</strong></p></li>
-                  <li style="text-transform: uppercase">COURSE: <p><strong>{{adminData.course}}</strong></p></li>
-                  <li>EMAIL: <p><strong>{{adminData.email}}</strong></p></li>
-                  <li>MOBILE: <p><strong>{{adminData.mobile}}</strong></p></li>
-                </ul>
-              </div>
-              {{!-- <div class="card-footer">
-                  <a class="btn btn-primary btn-block text-center" href="#">Edit Details<a/>
-              </div> --}}
-            </div>
+          <div class="col-lg mt-3 mt-lg-5">
+            <h3>Armor Officer Advance Course</h3>
+            <table class="table table-striped table-responsive">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Mobile</th>
+                  <th scope="col">Verify</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each aoacStudents}}
+                <tr>
+                  <th scope="row">{{this.serial}}</th>
+                  <td style="text-transform: uppercase">{{this.name}}</td>
+                  <td>{{this.email}}</td>
+                  <td>{{this.mobile}}</td>
+                  <td>
+                    {{#if this.isVerified}}
+                      Verified
+                    {{else}}
+                      <a href="/td/verifyuser/{{this.uid}}"><div class="btn btn-sm btn-info">Verify</div></a>
+                    {{/if}}
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <div class="row justify-content-center">
+
+          <div class="col-lg mt-3 mt-lg-5">
+            <h3>Armor NCO Advance Course</h3>
+            <table class="table table-striped table-responsive">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Mobile</th>
+                  <th scope="col">Verify</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each ancoacStudents}}
+                <tr>
+                  <th scope="row">{{this.serial}}</th>
+                  <td>{{this.name}}</td>
+                  <td>{{this.email}}</td>
+                  <td>{{this.mobile}}</td>
+                  <td>
+                    {{#if this.isVerified}}
+                      Verified
+                    {{else}}
+                      <a href="/td/verifyuser/{{this.uid}}"><div class="btn btn-sm btn-info">Verify</div></a>
+                    {{/if}}
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <div class="row justify-content-center">
+
+          <div class="col-lg mt-3 mt-lg-5">
+            <h3>Armor NCO Basic Course</h3>
+            <table class="table table-striped table-responsive">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Mobile</th>
+                  <th scope="col">Verify</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each ancobcStudents}}
+                <tr>
+                  <th scope="row">{{this.serial}}</th>
+                  <td>{{this.name}}</td>
+                  <td>{{this.email}}</td>
+                  <td>{{this.mobile}}</td>
+                  <td>
+                    {{#if this.isVerified}}
+                      Verified
+                    {{else}}
+                      <a href="/td/verifyuser/{{this.uid}}"><div class="btn btn-sm btn-info">Verify</div></a>
+                    {{/if}}
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
           </div>
 
         </div>

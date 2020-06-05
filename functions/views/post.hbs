@@ -35,7 +35,7 @@
   <header id="header" class="fixed-top header-inner-pages">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo mr-auto"><a href="/">{{title}}</a></h1>
+      <h1 class="logo mr-auto"><a href="/td">{{title}}</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo mr-auto"><img src="/assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -44,7 +44,8 @@
           <li><a href="/td">Home</a></li>
           {{#if isLoggedIn}}
           <li><a href="/td/announcements">Announcements</a></li>
-          <li><a href="/td/post">Post Announcement</a></li>
+          <li class="active"><a href="/td/post">Post Announcement</a></li>
+          <li><a href="/td/students">Students</a></li>
           <li><a href="/td/profile">Profile</a></li>
           <li><a href="/td/logout">Logout</a></li>
           {{else}}
