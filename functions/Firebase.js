@@ -4,14 +4,14 @@ require('firebase/database');
 require('firebase/firebase-storage');
 
 const config = {
-    apiKey: "AIzaSyBHJk6Z4bbkQIB0BSn4rRdewvVzCDnm9_o",
-    authDomain: "kahusayanportal.firebaseapp.com",
-    databaseURL: "https://kahusayanportal.firebaseio.com",
-    projectId: "kahusayanportal",
-    storageBucket: "kahusayanportal.appspot.com",
-    messagingSenderId: "162435559210",
-    appId: "1:162435559210:web:c0a1a439945663bdebf853",
-    measurementId: "G-QJLHTVMMFC"
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
 }
 
 firebase.initializeApp(config);
