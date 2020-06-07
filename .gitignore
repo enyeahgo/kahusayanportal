@@ -2,4 +2,4 @@ Firebase.js
 node_modules/
 .vs/
 firebase-debug.log
-
+./functions/Firebase.js
