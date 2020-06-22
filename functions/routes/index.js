@@ -191,5 +191,30 @@ router.post('/uploadphoto', function(req, res, next) {
   // .catch(console.error);
 })
 
+router.get('/week/:num', getUserDataFromCookie, function(req, res, next) {
+  if(res.isLoggedIn){
+    switch(res.userdata.course) {
+      case 'Armor Officer Advance Course':
+        firebase.database().ref('Activities/AOAC/Weeks/'+req.params.num).orderByChild('schedule').on('value', function(dataSnapshot) {
+          res.render('week', {
+            title: 'KAHUSAYAN',
+            pageTitle: 'Week '+req.params.num,
+            course: 'AOAC',
+            weekNum: req.params.num,
+            userdata: res.userdata,
+            isAdmin: false,
+            isLoggedIn: true,
+            isVerified: res.userdata.isVerified,
+            activities: dataSnapshot.val()
+          })
+        })
+    }
+  } else {
+    res.clearCookie('__session');
+    res.cookie('__session', {error: 'You need to login!'}, { httpOnly: true, sameSite: 'none' });
+    res.redirect('/login');
+  }
+})
+
 
 module.exports = router;
