@@ -281,4 +281,18 @@ router.get('/verifyuser/:uid', function(req, res, next) {
     res.redirect('/td/students');
 })
 
+router.get('/newactivity', getAdminDataFromCookie, function(req, res, next) {
+    if(res.isLoggedIn){
+        res.render('newactivity', {
+            title: 'DIRECTORATE',
+            pageTitle: 'New Activity',
+            
+        })
+    } else {
+        res.clearCookie('__session');
+        res.cookie('__session', {error: 'You need to login as admin.'}, { httpOnly: true, sameSite: 'none' });
+        res.redirect('/td/login');
+    }
+})
+
 module.exports = router;
