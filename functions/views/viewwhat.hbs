@@ -44,8 +44,8 @@
           <li><a href="/td">Home</a></li>
           {{#if isLoggedIn}}
           <li><a href="/td/announcements">Announcements</a></li>
-          <li class="active"><a href="/td/post">Post Announcement</a></li>
-          <li><a href="/td/activities">Activities</a></li>
+          <li><a href="/td/post">Post Announcement</a></li>
+          <li class="active"><a href="/td/activities">Activities</a></li>
           <li><a href="/td/newactivity">Post Activity</a></li>
           <li><a href="/td/students">Students</a></li>
           <li><a href="/td/profile">Profile</a></li>
@@ -74,23 +74,46 @@
             <div class="card shadow">
               <div class="card-header">
                 <div class="section-title">
-                  <h2>POST NEW ANNOUNCEMENT</h2>
+                  <h2>ACTIVITIES</h2>
                   <p style="color: red;">{{error}}</p>
                 </div>
               </div>
               <div class="card-body">
-                <form action="/td/post" method="post" role="form">
+                <form action="/td/viewactivity" method="post" role="form">
                   <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control" />
+                    <label for="course">Course</label>
+                    <select name="course" class="form-control" required>
+                      <option selected disabled>Select Course</option>
+                      <option value="AOAC">AOAC</option>
+                      <option value="ANCOAC">ANCOAC</option>
+                      <option value="ANCOBC">ANCOBC</option>
+                    </select>
                   </div>
                   <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea class="form-control" style="text-align: left" rows="3" name="message"></textarea>
+                    <label for="weeknum">Week Number</label>
+                    <select name="weeknum" class="form-control" required>
+                      <option selected disabled>Select Week</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                    </select>
                   </div>
               </div>
               <div class="card-footer">
-                  <input class="btn btn-primary btn-block text-center" type="submit" value="Post" />
+                  <input class="btn btn-primary btn-block text-center" type="submit" value="View" />
                 </form>
               </div>
             </div>

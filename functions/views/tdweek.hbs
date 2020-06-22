@@ -39,48 +39,22 @@
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo mr-auto"><img src="/assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
-      {{#if isAdmin}}
-        <nav class="nav-menu d-none d-lg-block">
-          <ul>
-            <li><a href="/td">Home</a></li>
-            {{#if isLoggedIn}}
-            <li class="active"><a href="/td/announcements">Announcements</a></li>
-            <li><a href="/td/post">Post Announcement</a></li>
-            <li><a href="/td/activities">Activities</a></li>
-            <li><a href="/td/newactivity">Post Activity</a></li>
-            <li><a href="/td/students">Students</a></li>
-            <li><a href="/td/profile">Profile</a></li>
-            <li><a href="/td/logout">Logout</a></li>
-            {{else}}
-            <li><a href="/login">Login</a></li>
-            {{/if}}
-          </ul>
-        </nav><!-- .nav-menu -->
-      {{else}}
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li><a href="/">Home</a></li>
-          {{#if isVerified}}
-          <li class="active"><a href="/announcements">Announcements</a></li>
-          {{!-- <li><a href="/uploadphoto">Upload Photo</a></li> --}}
+          <li><a href="/td">Home</a></li>
+          {{#if isLoggedIn}}
+          <li><a href="/td/announcements">Announcements</a></li>
+          <li><a href="/td/post">Post Announcement</a></li>
+          <li class="active"><a href="/td/activities">Activities</a></li>
+          <li><a href="/td/newactivity">Post Activity</a></li>
+          <li><a href="/td/students">Students</a></li>
+          <li><a href="/td/profile">Profile</a></li>
+          <li><a href="/td/logout">Logout</a></li>
+          {{else}}
+          <li><a href="/login">Login</a></li>
           {{/if}}
-          {{!-- <li><a href="/services">Services</a></li>
-          <li><a href="/portfolio">Portfolio</a></li>
-          <li><a href="/team">Team</a></li> --}}
-          <li class="drop-down"><a href="">Account</a>
-            <ul>
-                {{#if isLoggedIn}}
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/logout">Logout</a></li>
-                {{else}}
-                <li><a href="/register">Create Account</a></li>
-                <li><a href="/login">Login</a></li>
-                {{/if}}
-            </ul>
-          </li>
         </ul>
       </nav><!-- .nav-menu -->
-      {{/if}}
 
     </div>
   </header><!-- End Header -->
@@ -90,33 +64,14 @@
     <!-- ======= Breadcrumbs ======= -->
     <section class="breadcrumbs">
       <div class="container text-center" style="margin-top: 10px">
-        <h2>Announcements</h2>
+        <h2>{{pageTitle}}</h2>
+        <p>{{course}}</p>
       </div>
     </section><!-- End Breadcrumbs -->
 
     <!-- ======= Portfolio Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
-
-        <div class="portfolio-details-container">
-
-          <div class="owl-carousel portfolio-details-carousel">
-            <img src="/assets/img/announcements/1.jpg" class="img-fluid" alt="">
-            {{!-- <img src="/assets/img/announcements/2.jpg" class="img-fluid" alt=""> --}}
-            {{!-- <img src="/assets/img/announcements/3.jpg" class="img-fluid" alt=""> --}}
-          </div>
-
-          {{!-- <div class="portfolio-info">
-            <h3>Project information</h3>
-            <ul>
-              <li><strong>Category</strong>: Web design</li>
-              <li><strong>Client</strong>: ASU Company</li>
-              <li><strong>Project date</strong>: 01 March, 2020</li>
-              <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
-            </ul>
-          </div> --}}
-
-        </div>
 
         {{!-- <div class="portfolio-description">
           <h2>This is an example of portfolio detail</h2>
@@ -125,17 +80,90 @@
           </p>
         </div> --}}
 
-        <div class="list-group" style="margin-top: 30px">
-          {{#each announcements}}
-          <div class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{{this.title}}</h5>
-              <small>{{this.dateAnnounced}}</small>
+        <div class="accordion" id="accordionExample">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  Day 1, Week {{weekNum}}
+                </button>
+              </h5>
             </div>
-            <p class="mb-1">{{this.message}}</p>
-            <small>{{this.announcer}}</small>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                <div class="list-group" style="margin-top: 30px">
+                  {{#each activities}}
+                  <div class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">{{this.activity}}</h5>
+                      <small>{{this.schedule}}</small>
+                    </div>
+                    <p class="mb-1">{{this.discussion}}</p>
+                    <small>{{this.type}}</small>
+                  </div>
+                  {{/each}}
+                </div>
+              </div>
+            </div>
           </div>
-          {{/each}}
+          <div class="card">
+            <div class="card-header" id="headingTwo">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Day 2, Week {{weekNum}}
+                </button>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingThree">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Day 3, Week {{weekNum}}
+                </button>
+              </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFour">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  Day 4, Week {{weekNum}}
+                </button>
+              </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingFive">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  Day 5, Week {{weekNum}}
+                </button>
+              </h5>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
